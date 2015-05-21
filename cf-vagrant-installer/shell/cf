@@ -1,0 +1,20 @@
+cf is cf_cf-install_1429524638022_75913
+
+
+package_size=`du -h /tmp/dea_ng/staging/d20150421-12525-j5jd8t/app.zip | cut -f1`\n      
+    echo \"-----> Downloaded app package ($package_size)\" >> /tmp/staged/logs/staging_task.log\n        
+  unzip -q /tmp/dea_ng/staging/d20150421-12525-j5jd8t/app.zip -d /tmp/unstaged\n","privileged":true}
+
+
+
+
+  package_size=`du -h /tmp/dea_ng/staging/d20150421-12525-j5jd8t/app.zip | cut -f1`\n          echo \"-----> Downloaded app package ($package_size)\" >> /tmp/staged/logs/staging_task.log\n          unzip -q /tmp/dea_ng/staging/d20150421-12525-j5jd8t/app.zip -d /tmp/unstaged\n","privileged":true}
+
+
+script":"PLATFORM_CONFIG=/tmp/dea_ng/staging/d20150421-12525-j5jd8t/platform_config BUILDPACK_CACHE=/var/vcap/packages/buildpack_cache STAGING_TIMEOUT=28000.0 ruby /vagrant/dea_ng/buildpacks/bin/run /tmp/dea_ng/staging/d20150421-12525-j5jd8t/plugin_config >> /tmp/staged/logs/staging_task.log 2>&1","privileged":true},
+
+
+drwxrwxrwt  11 root    root     4096 Apr 22 07:35 tmp
+
+drwxrwxrwx  11 root    root     4096 Apr 22 07:35 tmp
+

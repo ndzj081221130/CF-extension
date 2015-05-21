@@ -1,0 +1,6 @@
+#!/bin/bash
+cf target http://api.192.168.12.34.xip.io:8181
+cf login --username admin --password password
+cf create-org myorg
+cf create-space myspace
+cf switch-space myspace

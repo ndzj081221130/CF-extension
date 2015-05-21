@@ -1,0 +1,8 @@
+---
+applications:
+- name: proc
+  memory: 480M
+  instances: 1
+  host: proc
+  domain: 192.168.12.34.xip.io
+  path: .

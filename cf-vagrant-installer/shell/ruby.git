@@ -1,0 +1,28 @@
+#!/bin/sh 
+
+sudo gem install bundler
+
+
+
+sudo apt-get update
+
+sudo apt-get install -y libmysql-ruby libmysqlclient-dev
+
+sudo apt-get install -y libpq-dev
+
+sudo apt-get install -y libsqlite3-dev
+
+sudo apt-get install -y libcurl3-dev
+
+sudo apt-get install -y libxslt-dev libxml2-dev 
+
+sudo apt-get install -y ruby1.9.1-dev
+
+
+sudo apt-get install -y debootstrap
+
+sudo apt-get install -y quota
+
+sudo apt-get install -y  cgroup-bin libreadline-dev zlib1g-dev  
+
+sudo apt-get install -y bzr

@@ -1,0 +1,8 @@
+---
+applications:
+- name: db_new
+  memory: 300M
+  instances: 1
+  host: db
+  domain: 192.168.12.34.xip.io
+  path: .

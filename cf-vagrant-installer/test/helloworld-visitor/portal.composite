@@ -1,0 +1,22 @@
+<composite xmlns="http://docs.oasis-open.org/ns/opencsa/sca/200912"
+xmlns:tuscany="http://tuscany.apache.org/xmlns/sca/1.1"
+targetNamespace="http://sample"
+name="helloworld-contribution">
+
+<component name="PortalComponent">
+<implementation.java class="sample.PortalImpl"/>
+<service name="Portal">
+<tuscany:binding.jsonrpc uri="http://0.0.0.0:PORT/PortalComponent/Portal"/>
+</service>
+ 
+<reference name="auth"  >
+<tuscany:binding.jsonrpc uri=" http://tuscany.192.168.12.34.xip.io/AuthComponent/Auth" />
+</reference>  
+ 
+<reference name="proc"  >
+<tuscany:binding.jsonrpc uri=" http://proc.192.168.12.34.xip.io/ProcComponent/Proc" />
+</reference>
+
+</component>
+
+</composite>

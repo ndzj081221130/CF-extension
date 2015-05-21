@@ -1,0 +1,13 @@
+<composite xmlns="http://docs.oasis-open.org/ns/opencsa/sca/200912"
+xmlns:tuscany="http://tuscany.apache.org/xmlns/sca/1.1"
+targetNamespace="http://sample"
+name="helloworld-contribution">
+
+<component name="DBComponent">
+<implementation.java class="sample.DBImpl"/>
+<service name="DBService">
+<tuscany:binding.jsonrpc uri="http://0.0.0.0:PORT/DBComponent/DBService"/>
+</service>
+</component>
+
+</composite>

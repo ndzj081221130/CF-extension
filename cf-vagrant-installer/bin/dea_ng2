@@ -1,0 +1,5 @@
+#!/bin/bash
+
+cd /vagrant/dea_ng2
+bin/dea /vagrant/custom_config_files/dea_ng2/dea.yml
+

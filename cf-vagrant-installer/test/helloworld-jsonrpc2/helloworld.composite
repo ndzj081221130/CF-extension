@@ -1,0 +1,13 @@
+<composite xmlns="http://docs.oasis-open.org/ns/opencsa/sca/200912"
+xmlns:tuscany="http://tuscany.apache.org/xmlns/sca/1.1"
+targetNamespace="http://sample"
+name="helloworld-contribution">
+
+<component name="HelloworldComponent">
+<implementation.java class="sample.HelloworldImpl"/>
+<service name="Helloworld">
+<tuscany:binding.jsonrpc uri="http://0.0.0.0:PORT/HelloworldComponent/Helloworld"/>
+</service>
+</component>
+
+</composite>

@@ -1,0 +1,27 @@
+Tuscany - Getting Started - Helloworld JSONRPC Sample
+-----------------------------------------------------
+
+This sample extends the helloworld sample to make the helloworld service available as a JSON-RPC endpoint.
+JSON-RPC is a protocol for doing remote procedure calls encoded in JSON.
+
+The changes to the helloworld sample are:
+- update the pom.xml with the additional dependencies
+- update the composite to use the JSON-RPC binding 
+
+As with all the getting-started samples you can run this sample with:
+
+   mvn tuscany:run 
+
+Then at a web browser enter the following URL:
+(JSON-RPC aruguments are base64 encoded, so in this URL "WyJXb3JsZCJd" unecoded is "["World"]")
+
+   http://localhost:8080/HelloworldComponent/Helloworld?method=sayHello&params=WyJXb3JsZCJd&id=1
+
+which should return a page saying:
+
+   {"id":1,"result":"Hello World"}
+
+
+
+
+

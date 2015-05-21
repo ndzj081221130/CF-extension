@@ -1,0 +1,8 @@
+---
+applications:
+- name: auth_new
+  memory: 430M
+  instances: 1
+  host: auth
+  domain: 192.168.12.34.xip.io
+  path: .

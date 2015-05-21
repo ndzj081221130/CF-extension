@@ -1,0 +1,68 @@
+# See src/lib/dea/config.rb for optional config values.
+
+# Base directory for dea, application directories, dea temp files, etc. are all relative to this.
+base_dir: /tmp/dea_ng2
+
+domain: 192.168.12.34.xip.io
+
+logging:
+  file: /vagrant/logs/dea_ng2.log
+  level: debug2
+
+local_route: 192.168.12.34
+
+
+resources:
+  memory_mb: 2048
+  memory_overcommit_factor: 2
+  disk_mb: 2048
+  disk_overcommit_factor: 2
+
+# The this flag determines whether or not this DEA should only host
+# production apps. (default: false)
+only_production_apps: false
+
+nats_uri: nats://localhost:4222/
+
+pid_filename: /tmp/dea_ng2.pid
+
+warden_socket: /tmp/warden2.sock
+
+evacuation_delay_secs: 5
+
+index: 1
+collect_port: 8000
+collect_ip: 192.168.12.34
+query_port: 8700
+query_ip: 192.168.12.34
+
+staging:
+  enabled: true
+  platform_config:
+    cache: /var/vcap/data/stager/package_cache/ruby
+  environment:
+    PATH: /usr/local/ruby/bin
+    BUILDPACK_CACHE: /var/vcap/packages/buildpack_cache
+  memory_limit_mb: 1024
+  disk_limit_mb: 2048
+  max_staging_duration: 28000 # 15 minutes
+
+dea_ruby: /usr/bin/ruby
+
+# For Go-based directory server
+directory_server:
+  v1_port: 4386
+  v2_port: 5679
+  file_api_port: 1235
+  streaming_timeout: 100
+  logging:
+    level: info
+
+stacks:
+  - lucid64
+# Hook scripts for droplet start/stop
+# hooks:
+#   before_start: path/to/script
+#   after_start: path/to/script
+#   before_stop: path/to/script
+#   after_stop: path/to/script

@@ -1,0 +1,8 @@
+---
+applications:
+- name: child_new
+  memory: 350M
+  instances: 1
+  host: child
+  domain: 192.168.12.34.xip.io
+  path: .

@@ -1,0 +1,8 @@
+---
+applications:
+- name: log
+  memory: 256M
+  instances: 1
+  host: log
+  domain: 192.168.12.34.xip.io
+  path: .
