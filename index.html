@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Cf-extension by ndzj081221130</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Cf-extension</h1>
+      <h2 class="project-tagline"></h2>
+      <a href="https://github.com/ndzj081221130/CF-extension" class="btn">View on GitHub</a>
+      <a href="https://github.com/ndzj081221130/CF-extension/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/ndzj081221130/CF-extension/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="cf-extesion使用文档" class="anchor" href="#cf-extesion%E4%BD%BF%E7%94%A8%E6%96%87%E6%A1%A3" aria-hidden="true"><span class="octicon octicon-link"></span></a>CF-extesion使用文档</h1>
+
+<h2>
+<a id="前言" class="anchor" href="#%E5%89%8D%E8%A8%80" aria-hidden="true"><span class="octicon octicon-link"></span></a>前言</h2>
+
+<p>本文为CF-extesion的使用文档，该平台实现了对应用动态更新的支持</p>
+
+<h2>
+<a id="源码下载" class="anchor" href="#%E6%BA%90%E7%A0%81%E4%B8%8B%E8%BD%BD" aria-hidden="true"><span class="octicon octicon-link"></span></a>源码下载</h2>
+
+<p>首先从gitlab上下载源码,如果是从别人处copy的源码，一定要注意文件夹以及可执行文件的权限问题。否则部署应用的时候，会出现没有权限等问题。</p>
+
+<h2>
+<a id="host-machine环境设置" class="anchor" href="#host-machine%E7%8E%AF%E5%A2%83%E8%AE%BE%E7%BD%AE" aria-hidden="true"><span class="octicon octicon-link"></span></a>host machine环境设置</h2>
+
+<p>我们的实验环境是Ubuntu 12.04，如果需要使用git，则需要先下载git</p>
+
+<pre><code>sudo apt-get install git 
+
+</code></pre>
+
+<p>从gitlab上下载的源码，需要使用<a href="http://www.vagrantup.com">Vagrant</a>和<a href="http://www.virtualbox.org">VirtualBox</a>工具，开启一个虚拟机</p>
+
+<p>首先下载vagrant安装包，
+Download it from <a href="http://www.vagrantup.com">http://www.vagrantup.com</a> (version 1.2 or higher)
+Install required plugins: </p>
+
+<pre><code> vagrant plugin install vagrant-berkshelf
+
+ vagrant plugin install vagrant-omnibus
+
+</code></pre>
+
+<p>根目录下的VagrantFile设置了虚拟机的内存、cpu、使用的虚拟机镜像等信息，可做相应的修改</p>
+
+<h2>
+<a id="启动虚拟机" class="anchor" href="#%E5%90%AF%E5%8A%A8%E8%99%9A%E6%8B%9F%E6%9C%BA" aria-hidden="true"><span class="octicon octicon-link"></span></a>启动虚拟机</h2>
+
+<pre><code>vagrant up
+
+</code></pre>
+
+<p>vagrant up需要联网进行，因为有一些下载工作。</p>
+
+<p>此时如果是第一次创建虚拟机，那么需要较长的时间，首先是从远程下载一个虚拟机镜像，然后根据VagrantFile中的设置新建一个Ubuntu系统的虚拟机实例。</p>
+
+<p>当vagrant up成功时，vagrant ssh进入虚拟机。</p>
+
+<h4>
+<a id="如果报错chef-golang没有访问权限则执行rmsh" class="anchor" href="#%E5%A6%82%E6%9E%9C%E6%8A%A5%E9%94%99chef-golang%E6%B2%A1%E6%9C%89%E8%AE%BF%E9%97%AE%E6%9D%83%E9%99%90%E5%88%99%E6%89%A7%E8%A1%8Crmsh" aria-hidden="true"><span class="octicon octicon-link"></span></a>如果报错chef-golang没有访问权限，则执行./rm.sh</h4>
+
+<p>这个错误的原因，可能是因为vagrant使用chef工具安装go-lang失败。</p>
+
+<h2>
+<a id="进入虚拟机" class="anchor" href="#%E8%BF%9B%E5%85%A5%E8%99%9A%E6%8B%9F%E6%9C%BA" aria-hidden="true"><span class="octicon octicon-link"></span></a>进入虚拟机</h2>
+
+<pre><code>vagrant ssh
+
+</code></pre>
+
+<h2>
+<a id="安装虚拟机环境gitrubyjava等" class="anchor" href="#%E5%AE%89%E8%A3%85%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%8E%AF%E5%A2%83gitrubyjava%E7%AD%89" aria-hidden="true"><span class="octicon octicon-link"></span></a>安装虚拟机环境：git、ruby、java等</h2>
+
+<h4>
+<a id="1-首先安装git" class="anchor" href="#1-%E9%A6%96%E5%85%88%E5%AE%89%E8%A3%85git" aria-hidden="true"><span class="octicon octicon-link"></span></a>1 首先安装git，</h4>
+
+<pre><code>
+ sudo apt-get upgrade
+
+ sudo apt-get install git
+
+
+</code></pre>
+
+<p>可能会出现缺少liberror-curl的包，可以手动下载[8]，然后dpkg -i 安装。</p>
+
+<h4>
+<a id="2-接着安装ruby" class="anchor" href="#2-%E6%8E%A5%E7%9D%80%E5%AE%89%E8%A3%85ruby" aria-hidden="true"><span class="octicon octicon-link"></span></a>2 接着安装ruby</h4>
+
+<p>安装rbenv</p>
+
+<pre><code>git clone git://github.com/sstephenson/rbenv.git ~/.rbenv
+git clone git://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build
+git clone git://github.com/jamis/rbenv-gemset.git  ~/.rbenv/plugins/rbenv-gemset
+git clone git://github.com/sstephenson/rbenv-gem-rehash.git ~/.rbenv/plugins/rbenv-gem-rehash
+
+</code></pre>
+
+<p>下面 将 rbenv 加入到 $PATH 里</p>
+
+<pre><code>vi ~/.bash_profile
+</code></pre>
+
+<p>输入的内容：</p>
+
+<pre><code>export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"
+</code></pre>
+
+<p>最后执行</p>
+
+<pre><code>source ~/.bash_profile
+</code></pre>
+
+<p>安装ruby</p>
+
+<pre><code>rbenv install --list  # 列出所有 ruby 版本
+rbenv install 1.9.3-p392     # 安装 1.9.3-p392
+
+</code></pre>
+
+<p>设置版本</p>
+
+<pre><code>rbenv global 1.9.3-p392      # 默认使用 1.9.3-p392
+rbenv shell 1.9.3-p392    # 当前的 shell 使用 1.9.3-p392, 会设置一个 RBENV_VERSION 环境变量
+rbenv local 1.9.3-p392      # 当前目录使用 ruby1.9.3, 会生成一个 .rbenv-version 文件
+
+</code></pre>
+
+<h4>
+<a id="3-安装java" class="anchor" href="#3-%E5%AE%89%E8%A3%85java" aria-hidden="true"><span class="octicon octicon-link"></span></a>3 安装Java</h4>
+
+<p><a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html?ssSourceSiteId=ocomen">下载</a>,如果下载的版本名为jdk-7u40-linux-x64.tar.gz</p>
+
+<pre><code>sudo mkdir /usr/lib/jvm
+sudo tar zxvf jdk-7u40-linux-x64.tar.gz -C /usr/lib/jvm
+cd /usr/lib/jvm/
+sudo mv jdk1.7.0/ java-7-sun 
+
+</code></pre>
+
+<p>设置环境变量
+vim ~/.bash_profile </p>
+
+<pre><code>export JAVA_HOME=/usr/lib/jvm/java-7-sun  
+export JRE_HOME=${JAVA_HOME}/jre  
+export CLASSPATH=.:${JAVA_HOME}/lib:${JRE_HOME}/lib  
+export PATH=${JAVA_HOME}/bin:$PATH 
+source ~/.bash_profile  
+
+
+</code></pre>
+
+<h4>
+<a id="4-install-maven-" class="anchor" href="#4-install-maven-" aria-hidden="true"><span class="octicon octicon-link"></span></a>4 install maven :</h4>
+
+<pre><code>  sudo apt-get install maven
+
+</code></pre>
+
+<h4>
+<a id="5-安装make-" class="anchor" href="#5-%E5%AE%89%E8%A3%85make-" aria-hidden="true"><span class="octicon octicon-link"></span></a>5 安装make :</h4>
+
+<pre><code>  apt-get install build-essential
+
+</code></pre>
+
+<h4>
+<a id="6-安装zipgolangcurl等" class="anchor" href="#6-%E5%AE%89%E8%A3%85zipgolangcurl%E7%AD%89" aria-hidden="true"><span class="octicon octicon-link"></span></a>6 安装zip、golang，curl等，</h4>
+
+<pre><code>
+  cd /vagrant 
+
+  sudo apt-get install golang-go
+
+  gem install bundle
+
+  apt-get install zip
+
+  apt-get install curl  
+</code></pre>
+
+<h4>
+<a id="7-执行rake脚本" class="anchor" href="#7-%E6%89%A7%E8%A1%8Crake%E8%84%9A%E6%9C%AC" aria-hidden="true"><span class="octicon octicon-link"></span></a>7 执行Rake脚本</h4>
+
+<pre><code>  rake cf:bootstrap 
+
+</code></pre>
+
+<p>（在执行这一步之前，需要保证ruby，java，mvn等都已安装）</p>
+
+<p>如果执行失败，可以修复错误后，多次执行该脚本</p>
+
+<p>执行成功后，安装就告一段落</p>
+
+<h2>
+<a id="设置warden容器" class="anchor" href="#%E8%AE%BE%E7%BD%AEwarden%E5%AE%B9%E5%99%A8" aria-hidden="true"><span class="octicon octicon-link"></span></a>设置warden容器</h2>
+
+<p><a href="http://docs.cloudfoundry.com/docs/running/architecture/warden.html">参考</a></p>
+
+<h4>
+<a id="1-首先是warden需要setup安装warden前准备工作debootstrapquota" class="anchor" href="#1-%E9%A6%96%E5%85%88%E6%98%AFwarden%E9%9C%80%E8%A6%81setup%E5%AE%89%E8%A3%85warden%E5%89%8D%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9Cdebootstrapquota" aria-hidden="true"><span class="octicon octicon-link"></span></a>1 首先是warden需要setup，安装warden前准备工作：debootstrap，quota，</h4>
+
+<pre><code>  sudo apt-get install debootstrap
+
+  sudo apt-get install quota
+
+</code></pre>
+
+<h4>
+<a id="2-setup-warden-container-进入目录wardenwarden执行" class="anchor" href="#2-setup-warden-container-%E8%BF%9B%E5%85%A5%E7%9B%AE%E5%BD%95wardenwarden%E6%89%A7%E8%A1%8C" aria-hidden="true"><span class="octicon octicon-link"></span></a>2 setup warden container, 进入目录warden/warden执行</h4>
+
+<pre><code> sudo bundle exec rake setup[config/linux.yml] 
+
+</code></pre>
+
+<p>这里可以将warden/config/linux.yml安装stemcell的路径改为/var/warden/rootfs，否则每次关闭vagrant，stemcell就没了。</p>
+
+<p>rake setup在/tmp/warden目录下，使用debootstrap和chroot工具创建了一个linux系统。</p>
+
+<h3>
+<a id="如果因为更新系统导致vagrant不见了" class="anchor" href="#%E5%A6%82%E6%9E%9C%E5%9B%A0%E4%B8%BA%E6%9B%B4%E6%96%B0%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%87%B4vagrant%E4%B8%8D%E8%A7%81%E4%BA%86" aria-hidden="true"><span class="octicon octicon-link"></span></a>如果因为更新系统导致/vagrant不见了</h3>
+
+<pre><code>
+  sudo apt-get install linux-headers-‘uname -r’ 
+
+  vagrant plugin installvagrant-vbguest
+
+  gem install plugin vagrant-vbguest
+
+
+</code></pre>
+
+<p>然后ssh进虚拟机就有共享目录了。(最好就是不要安装linux镜像)</p>
+
+<h4>
+<a id="3-运行warden-server" class="anchor" href="#3-%E8%BF%90%E8%A1%8Cwarden-server" aria-hidden="true"><span class="octicon octicon-link"></span></a>3 运行warden-server</h4>
+
+<p>然后可以在warden/warden路径下开启warden server，并且可以开启warden client，与warden server进行交互。
+如果在cf中启动warden，记得去掉bin/warden中的sudo。
+在bin/warden第4行，删除rbenv</p>
+
+<pre><code>  sudo bundle exec rake warden:start[config/linux.yml]
+
+</code></pre>
+
+<h4>
+<a id="4-在warden-container中安装软件" class="anchor" href="#4-%E5%9C%A8warden-container%E4%B8%AD%E5%AE%89%E8%A3%85%E8%BD%AF%E4%BB%B6" aria-hidden="true"><span class="octicon octicon-link"></span></a>4 在warden container中安装软件</h4>
+
+<p>warden是cloud foundry v2中用来进行进程、资源隔离的一个重要组件，但是由于warden本身比较复杂，因此我在warden的setup，start，以及生成的stemcell中花费了大量的时间。warden setup时，会使用debootstrap，从宿主机器上克隆一个stemcell的镜像。</p>
+
+<p>我的问题在于，虽然环境变量成功clone了，但是文件共享这里却出了问题。
+比如镜像挂载，等等。所以我宿主机器的软件，在stemcell中都没有，很多需要手动安装
+首先进入/var/warden/rootfs</p>
+
+<pre><code>cd /var/warden/rootfs
+sudo chroot .
+
+</code></pre>
+
+<p>进入warden container容器中安装软件：zip，quota，gcc，wget, ruby，jvm</p>
+
+<pre><code>apt-get update 
+apt-get install zip
+apt-get install quota
+apt-get install gcc
+apt-get install wget
+apt-get install curl
+
+
+
+</code></pre>
+
+<p>后面两个要使用源码安装。在stemcell中用rbenv安装ruby时，总是会出问题，于是只能源码安装了，在安装前，必须安装一些依赖库。</p>
+
+<p>安装ruby前，先安装yaml，否则报错</p>
+
+<pre><code>
+
+
+
+    $ wget http://pyyaml.org/download/libyaml/yaml-0.1.4.tar.gz
+
+    $ tar xzvf yaml-0.1.4.tar.gz
+
+    $ cd yaml-0.1.4
+
+    $ ./configure --prefix=/usr/local
+
+    $ make
+
+    $ make install
+
+</code></pre>
+
+<p>然后安装ruby</p>
+
+<pre><code>
+    #下载ruby-1.9.3-p392.tar.gz
+
+    wget http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p392.tar.gz
+
+    #解压，tar -xzvf ruby-1.9.3-p392.tar.gz
+
+    cd ruby-1.9.3-p392
+
+    ./configure --prefix=/usr --enable-shared --disable-install-doc --with-opt-dir=/usr/local/lib
+
+    #编译并安装，即
+    make &amp;&amp; make install
+
+</code></pre>
+
+<h2>
+<a id="启动cloud-foundry各组件" class="anchor" href="#%E5%90%AF%E5%8A%A8cloud-foundry%E5%90%84%E7%BB%84%E4%BB%B6" aria-hidden="true"><span class="octicon octicon-link"></span></a>启动Cloud Foundry各组件</h2>
+
+<p>现在你就可以启动你本地的CloudFoundry了。</p>
+
+<pre><code>  cd /vagrant
+
+  ./start.sh #启动各组件
+
+  ./stop.sh #停止组件运行
+
+  ./status.sh #查看当前组件运行状态
+
+</code></pre>
+
+<p>运行各个组件后，通过status查看其状态，当所有的组件都运行成功后，说明Cloud Foundry平台搭建成功。</p>
+
+<h2>
+<a id="创建cloud-foundry用户" class="anchor" href="#%E5%88%9B%E5%BB%BAcloud-foundry%E7%94%A8%E6%88%B7" aria-hidden="true"><span class="octicon octicon-link"></span></a>创建Cloud Foundry用户</h2>
+
+<p>下面是创建用户，运行bin/init_cf_cli脚本中执行的命令</p>
+
+<pre><code>  cf target http://api.192.168.12.34.xip.io:8181
+
+  cf login --username admin --password password
+
+  cf create-org myorg
+
+  cf create-space myspace
+
+  cf switch-space myspace
+
+  cd test/helloworld-jsonrpc
+
+  cf push
+
+</code></pre>
+
+<h2>
+<a id="生成tuscany-buildpack" class="anchor" href="#%E7%94%9F%E6%88%90tuscany-buildpack" aria-hidden="true"><span class="octicon octicon-link"></span></a>生成tuscany-buildpack</h2>
+
+<p>我们部署的实验环境是Tuscany应用，因此需要创建tuscany-buildpack</p>
+
+<p>我们在dea_ng/buildpacks/vendor/目录下创建tuscany-buildpack，用于部署tuscany应用。由于tuscany源码在运行后，shell模块会等待用户输入，而这里会导致部署在CF上的应用因长时间没有响应而crash，而报错则会指导oom。因此，我们对Tuscany源码的shell部署进行了修改，注释掉等待用户输入的部分。</p>
+
+<p>并且为tuscany应用定制buildpack打包机制。类似于tomcat，首先下载java源码、部署java运行环境，然后下载修改后的tuscany源码，部署tuscany环境，主要是设置JAVA_HOME,TUSCANY_HOME。然后启动tusncay，运行tuscany.sh app.</p>
+
+<p>下载源码时，需要从服务器拖，或者在warden-container处建立一个cache，我们选择在cache处建一个下载资源的缓存池。</p>
+
+<pre><code>cd /var/warden/rootfs
+sudo chroot .
+mkdir -p /var/vcap/packages/buildpack_cache
+
+
+
+</code></pre>
+
+<p>我们在这个缓存目录下存放java-jdk.jar, tuscany.jar,</p>
+
+<h2>
+<a id="部署应用" class="anchor" href="#%E9%83%A8%E7%BD%B2%E5%BA%94%E7%94%A8" aria-hidden="true"><span class="octicon octicon-link"></span></a>部署应用</h2>
+
+<p>现在可以去本地的app</p>
+
+<p>为了识别出当前应是tuscany应用，我们在helloworld-jsonrpc目录下建立version.tuscany文件，指明使用的tuscany源码版本。</p>
+
+<pre><code>cd /vagrant/test/helloworld-jsonrpc
+mvn install -DskipTests (跳过测试，因为tuscany版本的问题，有一些测试用例跑不过去)
+cf psuh 
+
+</code></pre>
+
+<p>实验是
+可以直接运行./push.sh
+或者进入每个目录运行部署命令cf push</p>
+
+<p>通过cf apps查看应用的状态。</p>
+
+<p>通过curl http://someuser:somepassword@10.0.2.15:8081/routes，查看应用是否成功在路由器上注册。这里，如果返回的是{}，说明注册失败。（这里是一个bug，尚未修复）。只能手动kill掉router进程，在重新运行。</p>
+
+<pre><code>ps ax|grep router #然后删除router进程，一般有两个
+cd /vagrant/gorouter
+sudo ./bin/router -c =/vagrant/custom_config_files/gorouter/gorouter.yml
+
+
+</code></pre>
+
+<p>再次查看在router上注册的应用。此时应用有多个应用成功注册。</p>
+
+<h2>
+<a id="测试动态更新" class="anchor" href="#%E6%B5%8B%E8%AF%95%E5%8A%A8%E6%80%81%E6%9B%B4%E6%96%B0" aria-hidden="true"><span class="octicon octicon-link"></span></a>测试动态更新</h2>
+
+<p>运行HTTP中对Portal的定期访问，并且执行auth更新操作。</p>
+
+<pre><code>java -jar papa.jar
+
+cd /vagrant/dea_ng/lib/dea/conup_test
+ruby update_hello.rb
+
+</code></pre>
+
+<h2>
+<a id="常见错误" class="anchor" href="#%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF" aria-hidden="true"><span class="octicon octicon-link"></span></a>常见错误</h2>
+
+<h2>
+<a id="1--push-java应用出现oom" class="anchor" href="#1--push-java%E5%BA%94%E7%94%A8%E5%87%BA%E7%8E%B0oom" aria-hidden="true"><span class="octicon octicon-link"></span></a>1  push java应用出现oom</h2>
+
+<p>是因为CF不支持带有命令行读入操作的应用</p>
+
+<p>tuscany的源码支持从命令行读入用户输入的命令，这会导致该进程阻塞。而CF认为这样的阻塞是不合理的，因此会kill掉当前进程。</p>
+
+<p>将tuscany源码中的shell模块的</p>
+
+<h2>
+<a id="2-安装gem失败" class="anchor" href="#2-%E5%AE%89%E8%A3%85gem%E5%A4%B1%E8%B4%A5" aria-hidden="true"><span class="octicon octicon-link"></span></a>2 安装gem失败</h2>
+
+<p>删除根目录下的.gem文件夹。再试试。（遇到marshaldata too short，删除.gem，重新执行一遍）</p>
+
+<h2>
+<a id="3-启动warden后可能会报错" class="anchor" href="#3-%E5%90%AF%E5%8A%A8warden%E5%90%8E%E5%8F%AF%E8%83%BD%E4%BC%9A%E6%8A%A5%E9%94%99" aria-hidden="true"><span class="octicon octicon-link"></span></a>3 启动warden后可能会报错</h2>
+
+<p>quotaon:Mountpointor device)/not found or has no quota enabled</p>
+
+<p>解决方法，重启quota，这个是网上给的解决方法，我这里出现这个错误应该是warden中没有安装quota。还是需要quotaon -a的。</p>
+
+<pre><code>  quotaoff –a 
+
+  quotacheck –avugm
+
+  quotaon -a   
+
+</code></pre>
+
+<h2>
+<a id="4-errorcannot--loadsuch-file----zlib" class="anchor" href="#4-errorcannot--loadsuch-file----zlib" aria-hidden="true"><span class="octicon octicon-link"></span></a>4 error:cannot  loadsuch file -- zlib</h2>
+
+<p>安装一下zlib1-dev</p>
+
+<pre><code>sudo apt-get install zlib1g-dev
+</code></pre>
+
+<h2>
+<a id="5-bundle-install-遇到-extensionbuilderror问题时" class="anchor" href="#5-bundle-install-%E9%81%87%E5%88%B0-extensionbuilderror%E9%97%AE%E9%A2%98%E6%97%B6" aria-hidden="true"><span class="octicon octicon-link"></span></a>5 bundle install 遇到 ExtensionBuildError问题时</h2>
+
+<p>尝试一下安装ruby-dev，或者ruby1.8-dev或者ruby-1.9dev，这取决于你出问题的ruby版本，这里我使用的是</p>
+
+<pre><code>sudo apt-get install ruby1.9.1-dev
+
+</code></pre>
+
+<p>我是在本地化CloudFoundry时，遇到各种gem install问题的</p>
+
+<p>安装bcrypt-ruby失败
+尝试解决1：rm –rfvendor/bundle</p>
+
+<p>atomic安装失败
+安装ruby1.9.1-dev，</p>
+
+<pre><code>sudo apt-get install ruby1.9.1-dev
+
+</code></pre>
+
+<p>安装到nokogiri时，遇到“libxml2is missing”</p>
+
+<p>再执行</p>
+
+<pre><code>sudo apt-get install libxslt-dev libxml2-dev 
+
+</code></pre>
+
+<h2>
+<a id="6-cc在mysql2失败" class="anchor" href="#6-cc%E5%9C%A8mysql2%E5%A4%B1%E8%B4%A5" aria-hidden="true"><span class="octicon octicon-link"></span></a>6 cc在mysql2失败</h2>
+
+<pre><code>sudo apt-get install libmysql-ruby libmysqlclient-dev
+
+</code></pre>
+
+<p>结果pg失败，</p>
+
+<pre><code>sudo apt-get install libpq-dev
+
+</code></pre>
+
+<p>sqlite3失败</p>
+
+<pre><code>sudo apt-get install libsqlite3-dev
+
+</code></pre>
+
+<h2>
+<a id="7-cfoundryapppackageinvalid-150001-the-app-package-is-invalid-failed-repacking-application" class="anchor" href="#7-cfoundryapppackageinvalid-150001-the-app-package-is-invalid-failed-repacking-application" aria-hidden="true"><span class="octicon octicon-link"></span></a>7 CFoundry::AppPackageInvalid: 150001: The app package is invalid: failed repacking application</h2>
+
+<p>可能是warden容器中没有安装zip</p>
+
+<p>sudo chroot .到stemcell中手动安装的
+首先
+ apt-get update 
+然后 </p>
+
+<pre><code>apt-get install quota gcc iptables zip
+
+</code></pre>
+
+<h2>
+<a id="8-install-vagrant-vagrant-berkshelf-plugin-失败" class="anchor" href="#8-install-vagrant-vagrant-berkshelf-plugin-%E5%A4%B1%E8%B4%A5" aria-hidden="true"><span class="octicon octicon-link"></span></a>8 install vagrant vagrant-berkshelf plugin 失败</h2>
+
+<p>主要是nokogiri安装失败，解决如下：</p>
+
+<pre><code>
+sudo apt-get install zlib1g-dev lib64z1-dev
+
+NOKOGIRI_USE_SYSTEM_LIBRARIES=1 vagrant plugin install vagrant-berkshelf
+
+
+</code></pre>
+
+<h2>
+<a id="9-gorouter启动失败" class="anchor" href="#9-gorouter%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5" aria-hidden="true"><span class="octicon octicon-link"></span></a>9 gorouter启动失败</h2>
+
+<p>第一次连接NATS server时，是因为nats还未启动成功，因此dial tcp 127.0.0.1:4222 : connection regused，这个属于正常行为。
+如果连接失败。每隔1s会发起一次连接请求。</p>
+
+<p>但第二次连接时，报错json: cannot unmarshal null into Go value of type bool，应该是哪里传了一个空指针。</p>
+
+<p>log发现，host，user，pass都是正确的。</p>
+
+<p>在执行r.natsClient.RunWithDefaults(host,user,pass)报错。</p>
+
+<p>重启，重新启动都失败。</p>
+
+<p>src/router/logger.go:4: import /vagrant/gorouter/pkg/linux_amd64/github.com/cloudfoundry/gosteno.a: object is [linux amd64 go1.0.3 X:none] expected [linux amd64 go1 X:none]</p>
+
+<p>重新生成router可执行文件</p>
+
+<pre><code> ./bin/go  install router/router
+
+</code></pre>
+
+<p>这里应该是go版本的问题 ， 粗暴解决</p>
+
+<pre><code>go install -a -v all
+
+</code></pre>
+
+<h2>
+<a id="10-warden容器抛出oom错误" class="anchor" href="#10-warden%E5%AE%B9%E5%99%A8%E6%8A%9B%E5%87%BAoom%E9%94%99%E8%AF%AF" aria-hidden="true"><span class="octicon octicon-link"></span></a>10 warden容器抛出oom错误</h2>
+
+<p>有可能真是oom，那么此时就需要增加内存</p>
+
+<p>能正常cf push nodejs应用(设置内存限制256M)，java-web应用(设置内存限制512M)</p>
+
+<p>然后跑php，jboss/ejb， tuscany/sca应用时，就开始报oom了。</p>
+
+<p>1 扩大Vagrant虚拟机内存
+2 扩大应用内存：无效
+3 debug。。。</p>
+
+<p>这里是因为CF不支持部署等待命令行输入的应用</p>
+
+<hr>
+
+<h2>
+<a id="遇到错误多查看日志" class="anchor" href="#%E9%81%87%E5%88%B0%E9%94%99%E8%AF%AF%E5%A4%9A%E6%9F%A5%E7%9C%8B%E6%97%A5%E5%BF%97" aria-hidden="true"><span class="octicon octicon-link"></span></a>遇到错误多查看日志</h2>
+
+<p>/vagrant/logs主要查看dea和warden的日志</p>
+
+<p>/tmp/dea_ng/目录是dea_ng部署的临时文件夹，也可以查看部署的droplet等</p>
+
+<p>可以通过warden-client查看warden-server是否运行正常</p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/ndzj081221130/CF-extension">Cf-extension</a> is maintained by <a href="https://github.com/ndzj081221130">ndzj081221130</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
+
