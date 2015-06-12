@@ -380,6 +380,7 @@ apt-get install curl
 
 
 我们部署的实验环境是Tuscany应用，因此需要创建tuscany-buildpack
+####  由于cf rake:bootstrap时，dea的buildpack目录会被更新，因此原来的tuscany-buildpack将被删除，。我们可以从shell目录下将tuscany-buildpack拷贝到dea_ng/buildpacks/vendor目录下
 
 我们在dea_ng/buildpacks/vendor/目录下创建tuscany-buildpack，用于部署tuscany应用。由于tuscany源码在运行后，shell模块会等待用户输入，而这里会导致部署在CF上的应用因长时间没有响应而crash，而报错则会指导oom。因此，我们对Tuscany源码的shell部署进行了修改，注释掉等待用户输入的部分。
 
