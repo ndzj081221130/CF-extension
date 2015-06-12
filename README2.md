@@ -9,7 +9,7 @@ CF-extesion使用文档
 
 源码下载
 ---------------
-  首先从gitlab上下载源码,如果是从别人处copy的源码，一定要注意文件夹以及可执行文件的权限问题。否则部署应用的时候，会出现没有权限等问题。
+  首先从[gitlab][6]上下载源码,如果是从别人处copy的源码，一定要注意文件夹以及可执行文件的权限问题。否则部署应用的时候，会出现没有权限等问题。
   
   
 host machine环境设置
@@ -649,3 +649,4 @@ go install -a -v all
 [3]:http://packages.ubuntu.com/vivid/all/liberror-perl/download
 [4]:http://www.oracle.com/technetwork/java/javase/downloads/index.html?ssSourceSiteId=ocomen
 [5]:http://docs.cloudfoundry.com/docs/running/architecture/warden.html
+[6]:http://lab.artemisprojects.org/jiezhang/CF-extension
